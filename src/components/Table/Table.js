@@ -2,13 +2,12 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React, { Component } from 'react'
-import { array, object } from 'prop-types'
+import { array } from 'prop-types'
 import styled from 'styled-components'
 import _ from 'lodash'
 
 import { colors } from '../../config'
 
-import TableAddRow from './TableAddRow'
 import TableHeader from './TableHeader'
 import TableRow from './TableRow'
 
@@ -16,85 +15,82 @@ import TableRow from './TableRow'
 // Component
 //-----------------------------------------------------------------------------
 export default class Table extends Component {
+	state = {
+		sortOrder: this.props.structure[0].defaultSortOrder,
+		sortField: this.props.structure[0].id
+	}
 
-  state = {
-    sortOrder: 'desc',
-    sortCategory: 'date'
-  }
+	sortRows = (sortField, sortOrder) => {
+		const { rows } = this.props
+		const rowValue = row => {
+			const sortCell = _.find(row.cells, cell => {
+				return cell.structure.id === sortField
+			})
+			return sortCell.value
+		}
+		const compareRowValues = (row1, row2) => {
+			const row1Value = rowValue(row1)
+			const row2Value = rowValue(row2)
+			if (row1Value < row2Value) return sortOrder === 'ASC' ? -1 : 1
+			if (row1Value > row2Value) return sortOrder === 'ASC' ? 1 : -1
+			return 0
+		}
 
-  sortData = (sortCategory, sortOrder) => {
-    const {
-      data
-    } = this.props
+		return rows.sort(compareRowValues)
+	}
 
-    return _.orderBy(data, [sortCategory], [sortOrder])
-  }
+	onHeaderClick = field => {
+		const { structure } = this.props
+		const { sortOrder, sortField } = this.state
+		let nextSortOrder
+		if (field === sortField) {
+			nextSortOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC'
+		} else {
+			nextSortOrder = _.find(structure, ['id', field]).defaultSortOrder
+		}
+		this.setState({
+			sortOrder: nextSortOrder,
+			sortField: field
+		})
+	}
 
-  onHeaderClick = (category) => {
-    const {
-      structure
-    } = this.props
-    const {
-      sortOrder,
-      sortCategory
-    } = this.state
+	render() {
+		const { structure } = this.props
+		const { sortOrder, sortField } = this.state
 
-    const nextSortOrder = category === sortCategory ? (sortOrder === 'asc' ? 'desc' : 'asc') : structure[category].defaultSortOrder
-    this.setState({
-      sortOrder: nextSortOrder,
-      sortCategory: category
-    })
-  }
+		const sortedRows = this.sortRows(sortField, sortOrder)
 
-  render() {
-    const {
-      structure
-    } = this.props
-
-    const {
-      sortOrder,
-      sortCategory
-    } = this.state
-
-    const sortedData = this.sortData(sortCategory, sortOrder)
-
-    return (
-      <Container>
-        <TableHeader
-          sampleRow={sortedData[0]}
-          sortOrder={sortOrder}
-          sortCategory={sortCategory}
-          onHeaderClick={this.onHeaderClick}
-          structure={structure}/>
-        <TableAddRow 
-          structure={structure}/>
-        {sortedData.map((row, index) => {
-          return (
-            <TableRow 
-              key={index}
-              data={row}
-              structure={structure}/>
-        )})}
-      </Container>
-    )
-  }
+		return (
+			<Container>
+				<TableHeader
+					sortOrder={sortOrder}
+					sortField={sortField}
+					onHeaderClick={this.onHeaderClick}
+					structure={structure}
+				/>
+				{sortedRows.map((row, index) => {
+					return <TableRow key={row.id} row={row} />
+				})}
+			</Container>
+		)
+	}
 }
 
 //-----------------------------------------------------------------------------
 // Props
 //-----------------------------------------------------------------------------
 Table.propTypes = {
-  data: array,
-  structure: object
+	rows: array,
+	structure: array
 }
 
 //-----------------------------------------------------------------------------
 // Styled Components
 //-----------------------------------------------------------------------------
 const Container = styled.div`
-  background-color: ${ colors.BACKGROUND_SECONDARY };
-  color: ${ colors.TEXT_DARK };
-  box-shadow: 1px 1px 4px ${ colors.BOX_SHADOW };
-  display: flex;
-  flex-direction: column;
+	background-color: ${colors.BACKGROUND_SECONDARY};
+	color: ${colors.TEXT_DARK};
+	box-shadow: 1px 1px 4px ${colors.BOX_SHADOW};
+	display: flex;
+	flex-direction: column;
 `

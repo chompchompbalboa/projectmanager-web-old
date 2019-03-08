@@ -1,10 +1,11 @@
 //-----------------------------------------------------------------------------
 // Imports
 //-----------------------------------------------------------------------------
-import React, { PureComponent } from 'react'
-import { string } from 'prop-types'
+import React from 'react'
+import { func, object } from 'prop-types'
 import styled from 'styled-components'
 
+import AppProjectContent from './AppProjectContent'
 import AppProjectSidebar from './AppProjectSidebar'
 
 //-----------------------------------------------------------------------------
@@ -13,16 +14,22 @@ import AppProjectSidebar from './AppProjectSidebar'
 const AppProject = ({
 	activeProject,
 	activeTable,
+	changeActiveProject,
 	changeActiveTable,
+	projects,
 	tables
 }) => {
 	return (
 		<Container>
 			<AppProjectSidebar
+				activeProject={activeProject}
 				activeTable={activeTable}
+				changeActiveProject={changeActiveProject}
 				changeActiveTable={changeActiveTable}
+				projects={projects}
 				tables={tables}
 			/>
+			<AppProjectContent activeTable={activeTable} />
 		</Container>
 	)
 }
@@ -31,7 +38,11 @@ const AppProject = ({
 // Styled Components
 //-----------------------------------------------------------------------------
 AppProject.propTypes = {
-	name: string
+	activeProject: object,
+	activeTable: object,
+	changeActiveProject: func,
+	projects: object,
+	changeActiveTable: func
 }
 
 //-----------------------------------------------------------------------------

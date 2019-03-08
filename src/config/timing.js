@@ -1,3 +1,3 @@
 export default {
-  TRANSITION_DURATION: '0.125s'
+	TRANSITION_DURATION: '0.08s'
 }

@@ -2,7 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
-import { func, object, oneOf, string } from 'prop-types'
+import { arrayOf, func, oneOf, shape, string } from 'prop-types'
 
 import { colors } from '../../config'
 
@@ -12,52 +12,48 @@ import TableRowContainer from './TableRowContainer'
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
-const TableHeader = ({ onHeaderClick, sampleRow, sortOrder, sortCategory, structure }) => {
-
-  // The field names in the data object serve as our column names. We need
-  // to create a new array to hold those names to pass to TableRow
-  const headers = Object.keys(sampleRow).map(header => {
-    return header.charAt(0).toUpperCase() + header.slice(1).toLowerCase()
-  })
-
-  return (
-    <TableRowContainer
-      backgroundColor={colors.ACCENT}
-      isHeader>
-      {headers.map((value, index) => {
-        const category = value.toLowerCase()
-        const valueWithSuffix = () => {
-          if (category === sortCategory) {
-            let arrowDirection = sortOrder === structure[category].defaultSortOrder ? 'DOWN' : 'UP'
-            return arrowDirection === 'UP' ? <span>{value}&nbsp;&nbsp;&#9650;</span> : <span>{value}&nbsp;&nbsp;&#9660;</span>
-          }
-          return value
-        }
-        return (
-          <TableCell
-            key={index}
-            onClick={() => onHeaderClick(category)}
-            value={valueWithSuffix()}
-            valueCursor={'pointer'}
-            width={structure[category].width}/>
-        )
-      })}
-    </TableRowContainer>
-  )
+const TableHeader = ({ onHeaderClick, sortOrder, sortField, structure }) => {
+	return (
+		<TableRowContainer backgroundColor={colors.ACCENT} isHeader>
+			{structure.map((field, index) => {
+				const header = () => {
+					if (field.id === sortField) {
+						let arrowDirection =
+							sortOrder === field.defaultSortOrder ? 'DOWN' : 'UP'
+						return arrowDirection === 'UP' ? (
+							<span>{field.header}&nbsp;&nbsp;&#9650;</span>
+						) : (
+							<span>{field.header}&nbsp;&nbsp;&#9660;</span>
+						)
+					}
+					return field.header
+				}
+				return (
+					<TableCell
+						key={index}
+						onClick={() => onHeaderClick(field.id)}
+						value={header()}
+						valueCursor={'pointer'}
+						width={field.width}
+					/>
+				)
+			})}
+		</TableRowContainer>
+	)
 }
 
 //-----------------------------------------------------------------------------
 // Props
 //-----------------------------------------------------------------------------
 TableHeader.propTypes = {
-  onHeaderClick: func,
-  sampleRow: object,
-  sortCategory: string,
-  sortOrder: oneOf([
-    'asc',
-    'desc'
-  ]),
-  structure: object
+	onHeaderClick: func,
+	sortField: string,
+	sortOrder: oneOf(['ASC', 'DESC']),
+	structure: arrayOf(
+		shape({
+			header: string
+		})
+	)
 }
 
 export default TableHeader

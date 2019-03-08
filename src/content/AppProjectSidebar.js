@@ -4,19 +4,33 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { colors, layout } from '../config'
+import { colors, layout, timing } from '../config'
 
+import AppProjectsChooseProject from './AppProjectsChooseProject'
 import HiddenScrollbarContainer from '../components/HiddenScrollbarContainer'
 
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
-const AppProjectSidebar = ({ activeTable, changeActiveTable, tables }) => {
+const AppProjectSidebar = ({
+	activeProject,
+	activeTable,
+	changeActiveProject,
+	changeActiveTable,
+	projects,
+	tables
+}) => {
 	return (
 		<Container>
+			<AppProjectsChooseProject
+				activeProject={activeProject}
+				changeActiveProject={changeActiveProject}
+				projects={projects}
+			/>
 			{tables.map((table, index) => {
 				return (
 					<TableName
+						key={table.id}
 						isActive={activeTable.id === table.id}
 						onClick={() => changeActiveTable(table)}>
 						{table.name}
@@ -33,23 +47,22 @@ const AppProjectSidebar = ({ activeTable, changeActiveTable, tables }) => {
 const Container = styled(HiddenScrollbarContainer)`
 	background-color: ${colors.BACKGROUND_SECONDARY};
 	position: fixed;
-	top: ${layout.HEADER_HEIGHT};
+	top: 0;
 	left: ${layout.SIDEBAR_WIDTH};
 	width: ${layout.PROJECT_SIDEBAR_WIDTH};
-	height: calc(100vh - ${layout.HEADER_HEIGHT});
-	box-shadow: -0.375px 0.375px 0.375px rgba(0, 0, 0, 0.16);
-	padding: ${layout.PADDING};
+	height: 100vh;
 `
 
 const TableName = styled.div`
 	cursor: pointer;
-	padding: 0.5vh 0 0.5vh 0.5vw;
-	color: ${props => (props.isActive ? colors.PRIMARY : 'inherit')};
-	border-left: 3px solid
-		${props => (props.isActive ? colors.PRIMARY : colors.BACKGROUND_SECONDARY)};
+	padding: calc(${layout.PADDING} / 1.5);
+	font-size: 13px;
+	font-weight: semibold;
+	background-color: ${props =>
+		props.isActive ? colors.BACKGROUND : colors.BACKGROUND_SECONDARY};
+	transition: all ${timing.TRANSITION_DURATION};
 	&:hover {
-		color: ${colors.PRIMARY};
-		border-left: 3px solid ${colors.PRIMARY};
+		background-color: ${colors.BACKGROUND};
 	}
 `
 

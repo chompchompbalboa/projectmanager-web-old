@@ -21,44 +21,43 @@ Amplify.configure(awsmobile)
 // Component
 //-----------------------------------------------------------------------------
 class App extends Component {
+	state = {
+		ACTIVE_CONTENT: 'PROJECTS'
+	}
 
-  state = {
-    ACTIVE_CONTENT: 'PROJECTS'
-  }
+	changeActiveContent = nextActiveContent => {
+		this.setState({
+			ACTIVE_CONTENT: nextActiveContent
+		})
+	}
 
-  changeActiveContent = (nextActiveContent) => {
-    this.setState({
-      ACTIVE_CONTENT: nextActiveContent
-    })
-  }
+	render() {
+		const { ACTIVE_CONTENT } = this.state
 
-  render() {
-    const {
-      ACTIVE_CONTENT
-    } = this.state
-
-    return (
-      <Container>
-        <AppSidebar
-          activeContent={ACTIVE_CONTENT}
-          activeContentChoices={enums.CONTENT}
-          changeActiveContent={this.changeActiveContent}/>
-        <AppContent>
-          {ACTIVE_CONTENT === 'ME' && <AppMe/>}
-          {ACTIVE_CONTENT === 'PROJECTS' && <AppProjects/>}
-          {ACTIVE_CONTENT === 'BUSINESS' && <AppBusiness/>}
-          {ACTIVE_CONTENT === 'SETTINGS' && <AppSettings/>}
-        </AppContent>
-      </Container>
-    )
-  }
+		return (
+			<Container>
+				<AppSidebar
+					activeContent={ACTIVE_CONTENT}
+					activeContentChoices={enums.CONTENT}
+					changeActiveContent={this.changeActiveContent}
+				/>
+				<AppContent>
+					{ACTIVE_CONTENT === 'ME' && <AppMe />}
+					{ACTIVE_CONTENT === 'PROJECTS' && <AppProjects />}
+					{ACTIVE_CONTENT === 'BUSINESS' && <AppBusiness />}
+					{ACTIVE_CONTENT === 'SETTINGS' && <AppSettings />}
+				</AppContent>
+			</Container>
+		)
+	}
 }
 
 //-----------------------------------------------------------------------------
 // Styled Components
 //-----------------------------------------------------------------------------
 const Container = styled.div`
-  color: ${ colors.TEXT_DARK };
+	z-index: 1000;
+	color: ${colors.TEXT_DARK};
 `
 
 export default withAuthenticator(App, true)

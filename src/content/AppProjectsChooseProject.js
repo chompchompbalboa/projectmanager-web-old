@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { array, func, shape, string } from 'prop-types'
 import styled from 'styled-components'
 
-import { colors } from '../config'
+import { colors, layout } from '../config'
 
 //-----------------------------------------------------------------------------
 // Component
@@ -184,6 +184,7 @@ AppProjectsChooseProject.propTypes = {
 //-----------------------------------------------------------------------------
 const Container = styled.div`
 	z-index: 10000;
+	padding: ${layout.PADDING} 0 ${layout.PADDING} calc(${layout.PADDING} / 1.5);
 `
 
 const CurrentProjectContainer = styled.div`
@@ -208,10 +209,9 @@ const DropdownContainer = styled.div`
 	z-index: 1000;
 	display: ${props => (props.isDropdownVisible ? 'block' : 'none')};
 	position: absolute;
-	margin-left: -0.75vw;
-	margin-top: 1vh;
-	max-height: 50vh;
-	min-width: 10vw;
+	margin-left: calc(-${layout.PADDING} / 1.5);
+	max-height: 50%;
+	min-width: 100%;
 	background-color: white;
 	border-top: 1.25px solid ${colors.BACKGROUND};
 	border-left: 1.25px solid ${colors.BACKGROUND};
@@ -229,7 +229,7 @@ const DropdownContainer = styled.div`
 const DropdownInput = styled.input`
 	width: 100%;
 	border: none;
-	padding: 0.5vw 0.75vw;
+	padding: 0.5vw 0 0.5vw 0.75vw;
 	font-size: 14px;
 	outline: none;
 	border-bottom: 1.25px solid ${colors.BACKGROUND};
@@ -237,7 +237,7 @@ const DropdownInput = styled.input`
 
 const DropdownProjectContainer = styled.div`
 	cursor: pointer;
-	padding: 0.25vw 0.75vw;
+	padding: 0.25vw 0 0.25vw 0.75vw;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -252,6 +252,4 @@ const DropdownProjectContainer = styled.div`
 	}
 `
 
-const DropdownProjectName = styled.div`
-	margin-right: 2vw;
-`
+const DropdownProjectName = styled.div``
