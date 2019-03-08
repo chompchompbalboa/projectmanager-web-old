@@ -2,11 +2,11 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React, { Component } from 'react'
+import { array, shape } from 'prop-types'
 import styled from 'styled-components'
 
 import { colors, layout } from '../config'
 
-import HiddenScrollbarContainer from '../components/HiddenScrollbarContainer'
 import Table from '../components/Table/Table'
 
 //-----------------------------------------------------------------------------
@@ -23,6 +23,16 @@ export default class AppProjectContent extends Component {
 			</Container>
 		)
 	}
+}
+
+//-----------------------------------------------------------------------------
+// Props
+//-----------------------------------------------------------------------------
+AppProjectContent.propTypes = {
+  activeTable: shape({
+    rows: array,
+    structure: array
+  })
 }
 
 //-----------------------------------------------------------------------------

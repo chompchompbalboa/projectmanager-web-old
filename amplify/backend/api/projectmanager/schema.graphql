@@ -1,0 +1,81 @@
+type User @model {
+	id: ID!
+	business: Business @connection(name: "BusinessEmployees")
+}
+
+type Business @model {
+	id: ID!
+	name: String!
+	employees: [User] @connection(name: "BusinessEmployees")
+}
+
+type Project @model {
+	id: ID!
+	name: String!
+	unique_id: String!
+	tables: [Table] @connection(name: "ProjectTables")
+}
+
+type Table @model {
+	id: ID!
+	project: Project! @connection(name: "ProjectTables")
+	structure: [Structure]! @connection(name: "TableStructure")
+	rows: [Row] @connection(name: "TableRows")
+}
+
+type Structure @model{
+	id: ID!
+	table: Table! @connection(name: "TableStructure")
+	header: String!
+	position: Int!
+	width: Float!
+	defaultSortOrder: SortOrderType!
+	type: StructureType!
+}
+
+enum StructureType {
+	INT
+	FLOAT
+	STRING
+	BOOLEAN
+	DATETIME
+}
+
+enum SortOrderType {
+	ASC
+	DESC
+}
+
+type Row @model{
+	id: ID!
+  table: Table! @connection(name: "TableRows")
+	cells: [Cell!]!
+}
+
+type Cell @model{
+	id: ID!
+	structure: Structure!
+	data: CellDataType!
+}
+
+union CellDataType = CellDataInt | CellDataFloat | CellDataString | CellDataBoolean | CellDataAWSDateTime
+
+type CellDataInt {
+  value: Int
+}
+
+type CellDataFloat {
+  value: Float
+}
+
+type CellDataString {
+  value: String
+}
+
+type CellDataBoolean {
+  value: Boolean
+}
+
+type CellDataAWSDateTime {
+  value: AWSDateTime
+}

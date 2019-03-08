@@ -2,7 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
-import { func, object } from 'prop-types'
+import { array, func, object } from 'prop-types'
 import styled from 'styled-components'
 
 import AppProjectContent from './AppProjectContent'
@@ -41,7 +41,8 @@ AppProject.propTypes = {
 	activeProject: object,
 	activeTable: object,
 	changeActiveProject: func,
-	projects: object,
+  projects: array,
+  tables: array,
 	changeActiveTable: func
 }
 

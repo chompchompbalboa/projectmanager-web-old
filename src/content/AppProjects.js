@@ -2,9 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
-import { colors, layout } from '../config'
 import projects from '../data/projects'
 
 import AppContentContainer from './AppContentContainer'

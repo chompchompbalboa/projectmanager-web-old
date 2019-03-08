@@ -11,7 +11,6 @@ import TableCell from './TableCell'
 // Component
 //-----------------------------------------------------------------------------
 const TableRow = ({ row: { cells } }) => {
-	console.log(cells)
 	return (
 		<TableRowContainer>
 			{cells.map(cell => {

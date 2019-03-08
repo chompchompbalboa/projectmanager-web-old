@@ -7,7 +7,9 @@
 	"dependencies": {
 		"aws-amplify": "1.1.22",
 		"aws-amplify-react": "2.3.2",
+		"aws-appsync": "^1.7.1",
 		"faker": "4.1.0",
+		"graphql-tag": "^2.10.1",
 		"moment": "2.24.0",
 		"react": "16.8.3",
 		"react-dom": "16.8.3",
@@ -21,5 +23,10 @@
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject"
 	},
-	"browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
 }

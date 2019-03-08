@@ -2,7 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
-import { arrayOf, func, oneOf, shape, string } from 'prop-types'
+import { arrayOf, func, number, oneOf, shape, string } from 'prop-types'
 
 import { colors } from '../../config'
 
@@ -47,7 +47,7 @@ const TableHeader = ({ onHeaderClick, sortOrder, sortField, structure }) => {
 //-----------------------------------------------------------------------------
 TableHeader.propTypes = {
 	onHeaderClick: func,
-	sortField: string,
+	sortField: number,
 	sortOrder: oneOf(['ASC', 'DESC']),
 	structure: arrayOf(
 		shape({

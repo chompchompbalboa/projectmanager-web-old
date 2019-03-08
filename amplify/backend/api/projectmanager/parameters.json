@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "projectmanager",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito6c6d5e49",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
