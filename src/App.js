@@ -11,12 +11,13 @@ import AppContent from './content/AppContent'
 import AppMe from './content/AppMe'
 import AppProjects from './content/AppProjects'
 import AppSettings from './content/AppSettings'
+import AppDevelopment from './content/AppDevelopment'
 import AppSidebar from './content/AppSidebar'
 
-import Amplify, { graphqlOperation }  from 'aws-amplify'
+import Amplify, { graphqlOperation } from 'aws-amplify'
 import awsmobile from './aws-exports'
 import { Connect, withAuthenticator } from 'aws-amplify-react'
-import * as queries from './graphql/queries';
+import * as queries from './graphql/queries'
 
 Amplify.configure(awsmobile)
 //-----------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Amplify.configure(awsmobile)
 class App extends Component {
 	state = {
 		ACTIVE_CONTENT: 'PROJECTS'
-  }
+	}
 
 	changeActiveContent = nextActiveContent => {
 		this.setState({
@@ -35,29 +36,30 @@ class App extends Component {
 
 	render() {
 		const { ACTIVE_CONTENT } = this.state
+		console.log(queries.listUsers)
 
 		return (
-      <Connect query={graphqlOperation(queries.listUsers)}>
-      {
-        () => {
-          return (
-            <Container>
-              <AppSidebar
-                activeContent={ACTIVE_CONTENT}
-                activeContentChoices={enums.CONTENT}
-                changeActiveContent={this.changeActiveContent}
-              />
-              <AppContent>
-                {ACTIVE_CONTENT === 'ME' && <AppMe />}
-                {ACTIVE_CONTENT === 'PROJECTS' && <AppProjects />}
-                {ACTIVE_CONTENT === 'BUSINESS' && <AppBusiness />}
-                {ACTIVE_CONTENT === 'SETTINGS' && <AppSettings />}
-              </AppContent>
-          </Container>
-          )
-        }
-      }
-      </Connect>
+			<Connect query={graphqlOperation(queries.listUsers)}>
+				{({ data: { listUsers }, loading, error }) => {
+					console.log(!loading && listUsers)
+					return (
+						<Container>
+							<AppSidebar
+								activeContent={ACTIVE_CONTENT}
+								activeContentChoices={enums.CONTENT}
+								changeActiveContent={this.changeActiveContent}
+							/>
+							<AppContent>
+								{ACTIVE_CONTENT === 'ME' && <AppMe />}
+								{ACTIVE_CONTENT === 'PROJECTS' && <AppProjects />}
+								{ACTIVE_CONTENT === 'BUSINESS' && <AppBusiness />}
+								{ACTIVE_CONTENT === 'SETTINGS' && <AppSettings />}
+								{ACTIVE_CONTENT === 'DEV' && <AppDevelopment />}
+							</AppContent>
+						</Container>
+					)
+				}}
+			</Connect>
 		)
 	}
 }

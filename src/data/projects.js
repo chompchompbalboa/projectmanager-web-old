@@ -23,11 +23,11 @@ const tables = [
 		name: 'Elements',
 		structure: [
 			//prettier-ignore
-			{ id: 1, header: 'Job Code', width: 0.1, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return '19-' + ('000' + (pI + 1)).slice(- 3) + '-' + ('00' + (rI + 1)).slice(- 2)} },
+			{ id: 1, header: 'Job Code', width: 0.15, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return '19-' + ('000' + (pI + 1)).slice(- 3) + '-' + ('00' + (rI + 1)).slice(- 2)} },
 			//prettier-ignore
 			{ id: 2, header: 'Name', width: 0.2, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return pN + ' ' + ('00' + (rI + 1)).slice(-2) }  },
 			//prettier-ignore
-			{ id: 3, header: 'Description', width: 0.3, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return faker.lorem.words(3) }},
+			{ id: 3, header: 'Description', width: 0.25, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return faker.lorem.words(3) }},
 			//prettier-ignore
 			{ id: 4, header: 'Department', width: 0.2, defaultSortOrder: 'ASC', value: (pN, pI, tI, rI, cI) => { return _.sample(departments) } },
 			//prettier-ignore
