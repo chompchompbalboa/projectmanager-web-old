@@ -4,10 +4,13 @@
 export const getUser = `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -22,7 +25,7 @@ export const listUsers = `query ListUsers(
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      business {
+      organization {
         id
         name
       }
@@ -31,8 +34,8 @@ export const listUsers = `query ListUsers(
   }
 }
 `;
-export const getBusiness = `query GetBusiness($id: ID!) {
-  getBusiness(id: $id) {
+export const getOrganization = `query GetOrganization($id: ID!) {
+  getOrganization(id: $id) {
     id
     name
     employees {
@@ -41,19 +44,30 @@ export const getBusiness = `query GetBusiness($id: ID!) {
       }
       nextToken
     }
+    projects {
+      items {
+        id
+        name
+        unique_id
+      }
+      nextToken
+    }
   }
 }
 `;
-export const listBusinesss = `query ListBusinesss(
-  $filter: ModelBusinessFilterInput
+export const listOrganizations = `query ListOrganizations(
+  $filter: ModelOrganizationFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listBusinesss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -64,11 +78,22 @@ export const listBusinesss = `query ListBusinesss(
 export const getProject = `query GetProject($id: ID!) {
   getProject(id: $id) {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -83,6 +108,10 @@ export const listProjects = `query ListProjects(
   listProjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -96,8 +125,13 @@ export const listProjects = `query ListProjects(
 export const getTable = `query GetTable($id: ID!) {
   getTable(id: $id) {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -130,6 +164,7 @@ export const listTables = `query ListTables(
   listTables(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      name
       project {
         id
         name
@@ -151,6 +186,7 @@ export const getStructure = `query GetStructure($id: ID!) {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -168,6 +204,12 @@ export const getStructure = `query GetStructure($id: ID!) {
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -181,12 +223,16 @@ export const listStructures = `query ListStructures(
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     nextToken
   }
@@ -197,6 +243,7 @@ export const getRow = `query GetRow($id: ID!) {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -210,30 +257,10 @@ export const getRow = `query GetRow($id: ID!) {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -244,9 +271,10 @@ export const listRows = `query ListRows($filter: ModelRowFilterInput, $limit: In
       id
       table {
         id
+        name
       }
       cells {
-        id
+        nextToken
       }
     }
     nextToken
@@ -256,33 +284,37 @@ export const listRows = `query ListRows($filter: ModelRowFilterInput, $limit: In
 export const getCell = `query GetCell($id: ID!) {
   getCell(id: $id) {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }
@@ -295,6 +327,9 @@ export const listCells = `query ListCells(
   listCells(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      row {
+        id
+      }
       structure {
         id
         header
@@ -302,21 +337,11 @@ export const listCells = `query ListCells(
         width
       }
       data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
+        int
+        float
+        string
+        bool
+        datetime
       }
     }
     nextToken

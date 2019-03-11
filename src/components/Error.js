@@ -2,34 +2,28 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
-import { bool } from 'prop-types'
 import styled from 'styled-components'
 
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
-const AppContentContainer = ({ children, isActive }) => {
+const Error = () => {
   return (
-    <Container
-      isActive={isActive}>
-      {children}
+    <Container>
+      Error...
     </Container>
   )
-}
-
-//-----------------------------------------------------------------------------
-// Props
-//-----------------------------------------------------------------------------
-AppContentContainer.propTypes = {
-  isActive: bool
 }
 
 //-----------------------------------------------------------------------------
 // Styled Components
 //-----------------------------------------------------------------------------
 const Container = styled.div`
-  display: ${ props => props.isActive ? 'initial' : 'none'};
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
-export default AppContentContainer
+export default Error

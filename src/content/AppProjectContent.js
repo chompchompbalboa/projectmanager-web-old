@@ -2,7 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React, { Component } from 'react'
-import { array, shape } from 'prop-types'
+import { array, bool, shape } from 'prop-types'
 import styled from 'styled-components'
 
 import { colors, layout } from '../config'
@@ -15,11 +15,16 @@ import Table from '../components/Table/Table'
 export default class AppProjectContent extends Component {
 	render() {
 		const {
-			activeTable: { rows, structure }
-		} = this.props
+      activeTable,
+      isLoading
+    } = this.props
 		return (
 			<Container>
-				<Table rows={rows} structure={structure} />
+        {activeTable && !isLoading &&
+          <Table 
+            rows={activeTable.rows && activeTable.rows.items} 
+            structure={activeTable.structure && activeTable.structure.items} />
+        }
 			</Container>
 		)
 	}
@@ -30,9 +35,12 @@ export default class AppProjectContent extends Component {
 //-----------------------------------------------------------------------------
 AppProjectContent.propTypes = {
   activeTable: shape({
-    rows: array,
+    rows: shape({
+      items: array
+    }),
     structure: array
-  })
+  }),
+  isLoading: bool
 }
 
 //-----------------------------------------------------------------------------

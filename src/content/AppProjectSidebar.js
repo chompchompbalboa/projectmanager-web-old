@@ -2,6 +2,7 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
+import { array, bool, func, object } from 'prop-types'
 import styled from 'styled-components'
 
 import { colors, layout, timing } from '../config'
@@ -16,18 +17,17 @@ const AppProjectSidebar = ({
 	activeProject,
 	activeTable,
 	changeActiveProject,
-	changeActiveTable,
-	projects,
-	tables
+  changeActiveTable,
+  isLoading,
+	projects
 }) => {
 	return (
 		<Container>
 			<AppProjectsChooseProject
 				activeProject={activeProject}
 				changeActiveProject={changeActiveProject}
-				projects={projects}
-			/>
-			{tables.map((table, index) => {
+				projects={projects}/>
+			{!isLoading && activeProject.tables.items.map((table) => {
 				return (
 					<TableName
 						key={table.id}
@@ -39,6 +39,18 @@ const AppProjectSidebar = ({
 			})}
 		</Container>
 	)
+}
+
+//-----------------------------------------------------------------------------
+// Styled Components
+//-----------------------------------------------------------------------------
+AppProjectSidebar.propTypes = {
+  activeProject: object,
+  activeTable: object,
+  changeActiveProject: func,
+  changeActiveTable: func,
+  isLoading: bool,
+  projects: array
 }
 
 //-----------------------------------------------------------------------------

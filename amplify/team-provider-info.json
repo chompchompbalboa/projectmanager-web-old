@@ -1,14 +1,14 @@
 {
 	"dev": {
 		"awscloudformation": {
-			"AuthRoleName": "projectmanager-web-20190307225217-authRole",
-			"UnauthRoleArn": "arn:aws:iam::724126350398:role/projectmanager-web-20190307225217-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::724126350398:role/projectmanager-web-20190307225217-authRole",
+			"AuthRoleName": "projectmanager-web-20190310144302-authRole",
+			"UnauthRoleArn": "arn:aws:iam::724126350398:role/projectmanager-web-20190310144302-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::724126350398:role/projectmanager-web-20190310144302-authRole",
 			"Region": "us-west-2",
-			"DeploymentBucketName": "projectmanager-web-20190307225217-deployment",
-			"UnauthRoleName": "projectmanager-web-20190307225217-unauthRole",
-			"StackName": "projectmanager-web-20190307225217",
-			"StackId": "arn:aws:cloudformation:us-west-2:724126350398:stack/projectmanager-web-20190307225217/b6ea09b0-416e-11e9-92dd-0a95c68a7df8"
+			"DeploymentBucketName": "projectmanager-web-20190310144302-deployment",
+			"UnauthRoleName": "projectmanager-web-20190310144302-unauthRole",
+			"StackName": "projectmanager-web-20190310144302",
+			"StackId": "arn:aws:cloudformation:us-west-2:724126350398:stack/projectmanager-web-20190310144302/7b6f8570-437d-11e9-81fd-02ee71065ed8"
 		},
 		"categories": {
 			"auth": {

@@ -1,26 +1,29 @@
 type User @model {
 	id: ID!
-	business: Business @connection(name: "BusinessEmployees")
+	organization: Organization @connection(name: "OrganizationEmployees")
 }
 
-type Business @model {
+type Organization @model {
 	id: ID!
 	name: String!
-	employees: [User] @connection(name: "BusinessEmployees")
+	employees: [User]! @connection(name: "OrganizationEmployees")
+  projects: [Project]! @connection(name: "OrganizationProjects")
 }
 
 type Project @model {
 	id: ID!
+  organization: Organization! @connection(name: "OrganizationProjects")
 	name: String!
 	unique_id: String!
-	tables: [Table] @connection(name: "ProjectTables")
+	tables: [Table]! @connection(name: "ProjectTables")
 }
 
 type Table @model {
 	id: ID!
+  name: String!
 	project: Project! @connection(name: "ProjectTables")
 	structure: [Structure]! @connection(name: "TableStructure")
-	rows: [Row] @connection(name: "TableRows")
+	rows: [Row]! @connection(name: "TableRows")
 }
 
 type Structure @model{
@@ -31,6 +34,7 @@ type Structure @model{
 	width: Float!
 	defaultSortOrder: SortOrderType!
 	type: StructureType!
+  cells:[Cell]!@connection(name:"CellStructure")
 }
 
 enum StructureType {
@@ -49,33 +53,20 @@ enum SortOrderType {
 type Row @model{
 	id: ID!
   table: Table! @connection(name: "TableRows")
-	cells: [Cell!]!
+	cells: [Cell]! @connection(name:"RowCells")
 }
 
 type Cell @model{
 	id: ID!
-	structure: Structure!
-	data: CellDataType!
+  row: Row! @connection(name:"RowCells")
+	structure: Structure! @connection(name:"CellStructure")
+	data: CellData!
 }
 
-union CellDataType = CellDataInt | CellDataFloat | CellDataString | CellDataBoolean | CellDataAWSDateTime
-
-type CellDataInt {
-  value: Int
-}
-
-type CellDataFloat {
-  value: Float
-}
-
-type CellDataString {
-  value: String
-}
-
-type CellDataBoolean {
-  value: Boolean
-}
-
-type CellDataAWSDateTime {
-  value: AWSDateTime
+type CellData {
+  int: Int
+  float: Float
+  string: String
+  bool: Boolean
+  datetime: AWSDateTime
 }

@@ -139,7 +139,7 @@ export default class AppProjectsChooseProject extends Component {
 			<Container>
 				<CurrentProjectContainer>
 					<CurrentProjectName onClick={() => this.toggleDropdownVisible()}>
-						{activeProject.name}
+						{activeProject && activeProject.name}
 					</CurrentProjectName>
 				</CurrentProjectContainer>
 				<DropdownContainer

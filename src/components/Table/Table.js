@@ -16,8 +16,8 @@ import TableRow from './TableRow'
 //-----------------------------------------------------------------------------
 export default class Table extends Component {
 	state = {
-		sortOrder: this.props.structure[0].defaultSortOrder,
-		sortField: this.props.structure[0].id
+		sortOrder: null,
+		sortField: null
 	}
 
 	sortRows = (sortField, sortOrder) => {
@@ -58,7 +58,8 @@ export default class Table extends Component {
 		const { structure } = this.props
 		const { sortOrder, sortField } = this.state
 
-		const sortedRows = this.sortRows(sortField, sortOrder)
+		// const sortedRows = this.sortRows(sortField, sortOrder)
+    const sortedRows = []
 
 		return (
 			<Container>

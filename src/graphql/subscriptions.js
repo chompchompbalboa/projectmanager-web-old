@@ -4,10 +4,13 @@
 export const onCreateUser = `subscription OnCreateUser {
   onCreateUser {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -17,10 +20,13 @@ export const onCreateUser = `subscription OnCreateUser {
 export const onUpdateUser = `subscription OnUpdateUser {
   onUpdateUser {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -30,18 +36,21 @@ export const onUpdateUser = `subscription OnUpdateUser {
 export const onDeleteUser = `subscription OnDeleteUser {
   onDeleteUser {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
   }
 }
 `;
-export const onCreateBusiness = `subscription OnCreateBusiness {
-  onCreateBusiness {
+export const onCreateOrganization = `subscription OnCreateOrganization {
+  onCreateOrganization {
     id
     name
     employees {
@@ -50,11 +59,19 @@ export const onCreateBusiness = `subscription OnCreateBusiness {
       }
       nextToken
     }
+    projects {
+      items {
+        id
+        name
+        unique_id
+      }
+      nextToken
+    }
   }
 }
 `;
-export const onUpdateBusiness = `subscription OnUpdateBusiness {
-  onUpdateBusiness {
+export const onUpdateOrganization = `subscription OnUpdateOrganization {
+  onUpdateOrganization {
     id
     name
     employees {
@@ -63,16 +80,32 @@ export const onUpdateBusiness = `subscription OnUpdateBusiness {
       }
       nextToken
     }
+    projects {
+      items {
+        id
+        name
+        unique_id
+      }
+      nextToken
+    }
   }
 }
 `;
-export const onDeleteBusiness = `subscription OnDeleteBusiness {
-  onDeleteBusiness {
+export const onDeleteOrganization = `subscription OnDeleteOrganization {
+  onDeleteOrganization {
     id
     name
     employees {
       items {
         id
+      }
+      nextToken
+    }
+    projects {
+      items {
+        id
+        name
+        unique_id
       }
       nextToken
     }
@@ -82,11 +115,22 @@ export const onDeleteBusiness = `subscription OnDeleteBusiness {
 export const onCreateProject = `subscription OnCreateProject {
   onCreateProject {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -96,11 +140,22 @@ export const onCreateProject = `subscription OnCreateProject {
 export const onUpdateProject = `subscription OnUpdateProject {
   onUpdateProject {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -110,11 +165,22 @@ export const onUpdateProject = `subscription OnUpdateProject {
 export const onDeleteProject = `subscription OnDeleteProject {
   onDeleteProject {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -124,8 +190,13 @@ export const onDeleteProject = `subscription OnDeleteProject {
 export const onCreateTable = `subscription OnCreateTable {
   onCreateTable {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -153,8 +224,13 @@ export const onCreateTable = `subscription OnCreateTable {
 export const onUpdateTable = `subscription OnUpdateTable {
   onUpdateTable {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -182,8 +258,13 @@ export const onUpdateTable = `subscription OnUpdateTable {
 export const onDeleteTable = `subscription OnDeleteTable {
   onDeleteTable {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -213,6 +294,7 @@ export const onCreateStructure = `subscription OnCreateStructure {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -230,6 +312,12 @@ export const onCreateStructure = `subscription OnCreateStructure {
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -238,6 +326,7 @@ export const onUpdateStructure = `subscription OnUpdateStructure {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -255,6 +344,12 @@ export const onUpdateStructure = `subscription OnUpdateStructure {
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -263,6 +358,7 @@ export const onDeleteStructure = `subscription OnDeleteStructure {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -280,6 +376,12 @@ export const onDeleteStructure = `subscription OnDeleteStructure {
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -288,6 +390,7 @@ export const onCreateRow = `subscription OnCreateRow {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -301,30 +404,10 @@ export const onCreateRow = `subscription OnCreateRow {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -334,6 +417,7 @@ export const onUpdateRow = `subscription OnUpdateRow {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -347,30 +431,10 @@ export const onUpdateRow = `subscription OnUpdateRow {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -380,6 +444,7 @@ export const onDeleteRow = `subscription OnDeleteRow {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -393,30 +458,10 @@ export const onDeleteRow = `subscription OnDeleteRow {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -424,33 +469,37 @@ export const onDeleteRow = `subscription OnDeleteRow {
 export const onCreateCell = `subscription OnCreateCell {
   onCreateCell {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }
@@ -458,33 +507,37 @@ export const onCreateCell = `subscription OnCreateCell {
 export const onUpdateCell = `subscription OnUpdateCell {
   onUpdateCell {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }
@@ -492,33 +545,37 @@ export const onUpdateCell = `subscription OnUpdateCell {
 export const onDeleteCell = `subscription OnDeleteCell {
   onDeleteCell {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }

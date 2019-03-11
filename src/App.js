@@ -6,6 +6,10 @@ import styled from 'styled-components'
 
 import { colors, enums } from './config'
 
+import Amplify, { Auth } from 'aws-amplify'
+import awsmobile from './aws-exports'
+import { Authenticator } from 'aws-amplify-react'
+
 import AppBusiness from './content/AppBusiness'
 import AppContent from './content/AppContent'
 import AppMe from './content/AppMe'
@@ -14,53 +18,59 @@ import AppSettings from './content/AppSettings'
 import AppDevelopment from './content/AppDevelopment'
 import AppSidebar from './content/AppSidebar'
 
-import Amplify, { graphqlOperation } from 'aws-amplify'
-import awsmobile from './aws-exports'
-import { Connect, withAuthenticator } from 'aws-amplify-react'
-import * as queries from './graphql/queries'
-
 Amplify.configure(awsmobile)
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
 class App extends Component {
 	state = {
-		ACTIVE_CONTENT: 'PROJECTS'
-	}
+    activeContent: 'DEV',
+    cognitoSub: null
+  }
+  
+  componentDidMount = async () => {
+    Auth.currentAuthenticatedUser().then((user) => {
+      this.setState({
+        cognitoSub: user.attributes.sub
+      })
+    })
+  }
 
 	changeActiveContent = nextActiveContent => {
 		this.setState({
-			ACTIVE_CONTENT: nextActiveContent
+			activeContent: nextActiveContent
 		})
 	}
 
 	render() {
-		const { ACTIVE_CONTENT } = this.state
-		console.log(queries.listUsers)
-
+    const { activeContent, cognitoSub } = this.state
 		return (
-			<Connect query={graphqlOperation(queries.listUsers)}>
-				{({ data: { listUsers }, loading, error }) => {
-					console.log(!loading && listUsers)
-					return (
-						<Container>
-							<AppSidebar
-								activeContent={ACTIVE_CONTENT}
-								activeContentChoices={enums.CONTENT}
-								changeActiveContent={this.changeActiveContent}
-							/>
-							<AppContent>
-								{ACTIVE_CONTENT === 'ME' && <AppMe />}
-								{ACTIVE_CONTENT === 'PROJECTS' && <AppProjects />}
-								{ACTIVE_CONTENT === 'BUSINESS' && <AppBusiness />}
-								{ACTIVE_CONTENT === 'SETTINGS' && <AppSettings />}
-								{ACTIVE_CONTENT === 'DEV' && <AppDevelopment />}
-							</AppContent>
-						</Container>
-					)
-				}}
-			</Connect>
-		)
+      <Authenticator
+        hideDefault>
+        <Container>
+          <AppSidebar
+            activeContent={activeContent}
+            activeContentChoices={enums.CONTENT}
+            changeActiveContent={this.changeActiveContent}
+          />
+          {cognitoSub && 
+            <AppContent>
+              <AppMe 
+                isActive={activeContent === 'ME'}/>
+              <AppProjects 
+                isActive={activeContent === 'PROJECTS'}/>
+              <AppBusiness 
+                isActive={activeContent === 'BUSINESS'}/>
+              <AppSettings 
+                isActive={activeContent === 'SETTINGS'}/>
+              <AppDevelopment 
+                cognitoSub={cognitoSub}
+                isActive={activeContent === 'DEV'}/>
+            </AppContent>
+          }
+        </Container>
+      </Authenticator>
+    )
 	}
 }
 
@@ -72,4 +82,4 @@ const Container = styled.div`
 	color: ${colors.TEXT_DARK};
 `
 
-export default withAuthenticator(App, true)
+export default App

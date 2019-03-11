@@ -1,50 +1,50 @@
 //-----------------------------------------------------------------------------
 // Imports
 //-----------------------------------------------------------------------------
-import React, { Component } from 'react'
+import React from 'react'
+import { bool, string } from 'prop-types'
 
-import projects from '../data/projects'
+import { graphqlOperation } from 'aws-amplify'
+import { Connect } from 'aws-amplify-react'
+import * as queries from '../graphql/queries'
 
 import AppContentContainer from './AppContentContainer'
 import AppProject from './AppProject'
-
+import Error from '../components/Error'
+import Loading from '../components/Loading'
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
-export default class AppProjects extends Component {
-	projects = projects
+const AppProjects = ({ organizationId, isActive}) =>  {
+  return (
+    <AppContentContainer
+      isActive={isActive}>
+      {isActive && 
+        <Connect query={graphqlOperation(queries.getOrganization, { id: organizationId })}>
+          {({ data: { getOrganization }, loading, error }) => {
+            if (loading) return <Loading />
+            if (error) return <Error />
 
-	state = {
-		ACTIVE_PROJECT: this.projects[0],
-		ACTIVE_TABLE: this.projects[0].tables[0]
-	}
-
-	changeActiveProject = nextActiveProject => {
-		this.setState({
-			ACTIVE_PROJECT: nextActiveProject,
-			ACTIVE_TABLE: nextActiveProject.tables[0]
-		})
-	}
-
-	changeActiveTable = nextActiveTable => {
-		this.setState({
-			ACTIVE_TABLE: nextActiveTable
-		})
-	}
-
-	render() {
-		const { ACTIVE_PROJECT, ACTIVE_TABLE } = this.state
-		return (
-			<AppContentContainer>
-				<AppProject
-					activeProject={ACTIVE_PROJECT}
-					activeTable={ACTIVE_TABLE}
-					changeActiveProject={this.changeActiveProject}
-					changeActiveTable={this.changeActiveTable}
-					projects={projects}
-					tables={ACTIVE_PROJECT.tables}
-				/>
-			</AppContentContainer>
-		)
-	}
+            const { 
+              projects
+              } = getOrganization
+              return (
+              <AppProject
+                projects={projects.items}/>
+              )
+            }}
+          </Connect>
+      }
+    </AppContentContainer>
+  )
 }
+
+//-----------------------------------------------------------------------------
+// Props
+//-----------------------------------------------------------------------------
+AppProjects.propTypes = {
+  organizationId: string,
+  isActive: bool
+}
+
+export default AppProjects

@@ -4,10 +4,13 @@
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -17,10 +20,13 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
 export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
@@ -30,18 +36,21 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
 export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
     id
-    business {
+    organization {
       id
       name
       employees {
+        nextToken
+      }
+      projects {
         nextToken
       }
     }
   }
 }
 `;
-export const createBusiness = `mutation CreateBusiness($input: CreateBusinessInput!) {
-  createBusiness(input: $input) {
+export const createOrganization = `mutation CreateOrganization($input: CreateOrganizationInput!) {
+  createOrganization(input: $input) {
     id
     name
     employees {
@@ -50,11 +59,19 @@ export const createBusiness = `mutation CreateBusiness($input: CreateBusinessInp
       }
       nextToken
     }
+    projects {
+      items {
+        id
+        name
+        unique_id
+      }
+      nextToken
+    }
   }
 }
 `;
-export const updateBusiness = `mutation UpdateBusiness($input: UpdateBusinessInput!) {
-  updateBusiness(input: $input) {
+export const updateOrganization = `mutation UpdateOrganization($input: UpdateOrganizationInput!) {
+  updateOrganization(input: $input) {
     id
     name
     employees {
@@ -63,16 +80,32 @@ export const updateBusiness = `mutation UpdateBusiness($input: UpdateBusinessInp
       }
       nextToken
     }
+    projects {
+      items {
+        id
+        name
+        unique_id
+      }
+      nextToken
+    }
   }
 }
 `;
-export const deleteBusiness = `mutation DeleteBusiness($input: DeleteBusinessInput!) {
-  deleteBusiness(input: $input) {
+export const deleteOrganization = `mutation DeleteOrganization($input: DeleteOrganizationInput!) {
+  deleteOrganization(input: $input) {
     id
     name
     employees {
       items {
         id
+      }
+      nextToken
+    }
+    projects {
+      items {
+        id
+        name
+        unique_id
       }
       nextToken
     }
@@ -82,11 +115,22 @@ export const deleteBusiness = `mutation DeleteBusiness($input: DeleteBusinessInp
 export const createProject = `mutation CreateProject($input: CreateProjectInput!) {
   createProject(input: $input) {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -96,11 +140,22 @@ export const createProject = `mutation CreateProject($input: CreateProjectInput!
 export const updateProject = `mutation UpdateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -110,11 +165,22 @@ export const updateProject = `mutation UpdateProject($input: UpdateProjectInput!
 export const deleteProject = `mutation DeleteProject($input: DeleteProjectInput!) {
   deleteProject(input: $input) {
     id
+    organization {
+      id
+      name
+      employees {
+        nextToken
+      }
+      projects {
+        nextToken
+      }
+    }
     name
     unique_id
     tables {
       items {
         id
+        name
       }
       nextToken
     }
@@ -124,8 +190,13 @@ export const deleteProject = `mutation DeleteProject($input: DeleteProjectInput!
 export const createTable = `mutation CreateTable($input: CreateTableInput!) {
   createTable(input: $input) {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -153,8 +224,13 @@ export const createTable = `mutation CreateTable($input: CreateTableInput!) {
 export const updateTable = `mutation UpdateTable($input: UpdateTableInput!) {
   updateTable(input: $input) {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -182,8 +258,13 @@ export const updateTable = `mutation UpdateTable($input: UpdateTableInput!) {
 export const deleteTable = `mutation DeleteTable($input: DeleteTableInput!) {
   deleteTable(input: $input) {
     id
+    name
     project {
       id
+      organization {
+        id
+        name
+      }
       name
       unique_id
       tables {
@@ -213,6 +294,7 @@ export const createStructure = `mutation CreateStructure($input: CreateStructure
     id
     table {
       id
+      name
       project {
         id
         name
@@ -230,6 +312,12 @@ export const createStructure = `mutation CreateStructure($input: CreateStructure
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -238,6 +326,7 @@ export const updateStructure = `mutation UpdateStructure($input: UpdateStructure
     id
     table {
       id
+      name
       project {
         id
         name
@@ -255,6 +344,12 @@ export const updateStructure = `mutation UpdateStructure($input: UpdateStructure
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -263,6 +358,7 @@ export const deleteStructure = `mutation DeleteStructure($input: DeleteStructure
     id
     table {
       id
+      name
       project {
         id
         name
@@ -280,6 +376,12 @@ export const deleteStructure = `mutation DeleteStructure($input: DeleteStructure
     width
     defaultSortOrder
     type
+    cells {
+      items {
+        id
+      }
+      nextToken
+    }
   }
 }
 `;
@@ -288,6 +390,7 @@ export const createRow = `mutation CreateRow($input: CreateRowInput!) {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -301,30 +404,10 @@ export const createRow = `mutation CreateRow($input: CreateRowInput!) {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -334,6 +417,7 @@ export const updateRow = `mutation UpdateRow($input: UpdateRowInput!) {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -347,30 +431,10 @@ export const updateRow = `mutation UpdateRow($input: UpdateRowInput!) {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -380,6 +444,7 @@ export const deleteRow = `mutation DeleteRow($input: DeleteRowInput!) {
     id
     table {
       id
+      name
       project {
         id
         name
@@ -393,30 +458,10 @@ export const deleteRow = `mutation DeleteRow($input: DeleteRowInput!) {
       }
     }
     cells {
-      id
-      structure {
+      items {
         id
-        header
-        position
-        width
       }
-      data {
-        ... on CellDataInt {
-          value
-        }
-        ... on CellDataFloat {
-          value
-        }
-        ... on CellDataString {
-          value
-        }
-        ... on CellDataBoolean {
-          value
-        }
-        ... on CellDataAWSDateTime {
-          value
-        }
-      }
+      nextToken
     }
   }
 }
@@ -424,33 +469,37 @@ export const deleteRow = `mutation DeleteRow($input: DeleteRowInput!) {
 export const createCell = `mutation CreateCell($input: CreateCellInput!) {
   createCell(input: $input) {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }
@@ -458,33 +507,37 @@ export const createCell = `mutation CreateCell($input: CreateCellInput!) {
 export const updateCell = `mutation UpdateCell($input: UpdateCellInput!) {
   updateCell(input: $input) {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }
@@ -492,33 +545,37 @@ export const updateCell = `mutation UpdateCell($input: UpdateCellInput!) {
 export const deleteCell = `mutation DeleteCell($input: DeleteCellInput!) {
   deleteCell(input: $input) {
     id
+    row {
+      id
+      table {
+        id
+        name
+      }
+      cells {
+        nextToken
+      }
+    }
     structure {
       id
       table {
         id
+        name
       }
       header
       position
       width
       defaultSortOrder
       type
+      cells {
+        nextToken
+      }
     }
     data {
-      ... on CellDataInt {
-        value
-      }
-      ... on CellDataFloat {
-        value
-      }
-      ... on CellDataString {
-        value
-      }
-      ... on CellDataBoolean {
-        value
-      }
-      ... on CellDataAWSDateTime {
-        value
-      }
+      int
+      float
+      string
+      bool
+      datetime
     }
   }
 }

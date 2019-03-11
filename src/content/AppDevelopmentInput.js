@@ -2,17 +2,20 @@
 // Imports
 //-----------------------------------------------------------------------------
 import React from 'react'
-import { bool } from 'prop-types'
+import { func, string } from 'prop-types'
 import styled from 'styled-components'
 
 //-----------------------------------------------------------------------------
 // Component
 //-----------------------------------------------------------------------------
-const AppContentContainer = ({ children, isActive }) => {
+const AppDevelopmentInput = ({ onChange, placeholder, value }) => {
   return (
-    <Container
-      isActive={isActive}>
-      {children}
+    <Container>
+      <Label>{placeholder}:&nbsp;</Label>
+      <StyledInput 
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        value={value}/>
     </Container>
   )
 }
@@ -20,16 +23,31 @@ const AppContentContainer = ({ children, isActive }) => {
 //-----------------------------------------------------------------------------
 // Props
 //-----------------------------------------------------------------------------
-AppContentContainer.propTypes = {
-  isActive: bool
+AppDevelopmentInput.propTypes = {
+  onChange: func,
+  placeholder: string,
+  value: string
 }
 
 //-----------------------------------------------------------------------------
 // Styled Components
 //-----------------------------------------------------------------------------
 const Container = styled.div`
-  display: ${ props => props.isActive ? 'initial' : 'none'};
-  width: 100%;
+  display: flex;
+  align-items: center;
 `
 
-export default AppContentContainer
+const Label = styled.div`
+  font-size: 14px;
+`
+
+const StyledInput = styled.input`
+  padding: 0.5vh;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 14px;
+`
+
+export default AppDevelopmentInput
